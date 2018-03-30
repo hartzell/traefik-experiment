@@ -16,4 +16,29 @@
    then uncomment and touch up the `acme.domains` bit at the bottom
    so that a certificate is generated.
 
+4. Run docker-compose, e.g.
+
+   ```
+   docker-compose up -d
+   ```
+
+5. Cocktail.
+
+6. ps.  The password for the admin user was generated like so:
+
+   ```
+   htpasswd -nb admin secure_password
+   ```
+
+   and then set in the `traefik.toml` file.
+
+At this point:
+
+| URL                    | result                                                                                                                                   |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| http://hostname/ping   | routed to Traefik's ping backend, respondes OK (or not).                                                                                 |
+| http://hostname/api    | routes to Traefik's https port, which requires auth, then to the API/dashboard backend.                                                  |
+| http://hostname/whoami | routes to Traefik's https port, which requires auth, then to a container running the "whoami" image, responds with some non-random data. |
+
+
 [install-compose]: https://docs.docker.com/compose/install/#install-compose

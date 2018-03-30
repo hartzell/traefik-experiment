@@ -13,22 +13,20 @@ services:
       - web
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/traefik/traefik.toml:/traefik.toml
-      - /opt/traefik/acme.json:/acme.json
+      - /home/hartzell/traefik-experiment/traefik.toml:/traefik.toml
+      - /home/hartzell/traefik-experiment/acme.json:/acme.json
     container_name: traefik
     labels:
       - "traefik.backend=traefik"
       - "traefik.docker.network=web"
       - "traefik.port=8080"
-      - "traefik.frontend.rule=Host:demo.palomarin.com;PathPrefixStrip:/api"
-      # - "traefik.frontend.rule=PathPrefixStrip:/whee"
-      # - "traefik.frontend.rule=Path:/whee"
+      - "traefik.frontend.rule=Host:bunny.do.alerce.com;PathPrefixStrip:/api"
       - "traefik.enable=true"
 
   whoami:
     image: emilevauge/whoami #A container that exposes an API to show it's IP address
     labels:
-      - "traefik.frontend.rule=Path:/fluffy"
+      - "traefik.frontend.rule=Path:/whoami"
       - "traefik.enable=true"
     networks:
       - web
@@ -36,4 +34,3 @@ services:
 networks:
   web:
     external: true
-

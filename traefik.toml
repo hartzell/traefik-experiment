@@ -3,12 +3,14 @@ debug = false
 logLevel = "ERROR"
 defaultEntryPoints = ["https","http"]
 
+# run the ping-test backend on http
+# http://<blah>/ping
 [ping]
 entryPoint = "http"
 
-# API definition
+# API backend, magic happens in the docker-compose.yml file...
+# ends up on https://<blah>/api
 [api]
-  # entryPoint = "https"
   entryPoint = "traefik"
   dashboard = true
   debug = false
@@ -26,13 +28,15 @@ entryPoint = "http"
     [entryPoints.traefik.auth.basic]
     users = ["admin:$apr1$hEFwU1HT$tSED2r4stzC9Tk1TnTZ6h/"]
 
+# retry requests if network error
 [retry]
 
+# listen for docker containers, only expose the containers that
+# request it
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "demo.palomarin.com"
 watch = true
-exposedbydefault = true
+exposedbydefault = false
 
 [acme]
 email = "hartzell@alerce.com"
@@ -42,6 +46,8 @@ OnHostRule = true
 [acme.httpChallenge]
 entryPoint = "http"
 
+# ensure we have a search for this host, even if we don't
+# mention it in any frontend rules.
 [[acme.domains]]
-  main = "demo.palomarin.com"
+  main = "bunny.do.alerce.com"
 
