@@ -45,7 +45,7 @@ At this point:
 
 | URL                     | result                                                                                                                                      |
 |-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| http://hostname/ping    | routed to Traefik's ping backend, respondes OK (or not).                                                                                    |
+| http://hostname/ping    | routed to Traefik's ping backend, responds OK (or not).                                                                                    |
 | http://hostname/api     | redirects to Traefik's https port, which requires auth, then to the API/dashboard backend.                                                  |
 | https://hostname/api    | hits Traefik's https port, which requires auth, then to the API/dashboard backend.                                                          |
 | http://hostname/whoami  | redirects to Traefik's https port, which requires auth, then to a container running the "whoami" image, responds with some non-random data. |
