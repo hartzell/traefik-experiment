@@ -3,36 +3,17 @@ debug = false
 logLevel = "ERROR"
 defaultEntryPoints = ["https","http"]
 
+[ping]
+entryPoint = "http"
+
 # API definition
 [api]
-  # Name of the related entry point
-  #
-  # Optional
-  # Default: "traefik"
-  #
-  # entryPoint = "traefik"
-  entryPoint = "https"
-
-  # Enabled Dashboard
-  #
-  # Optional
-  # Default: true
-  #
+  # entryPoint = "https"
+  entryPoint = "traefik"
   dashboard = true
-
-  # Enable debug mode.
-  # This will install HTTP handlers to expose Go expvars under /debug/vars and
-  # pprof profiling data under /debug/pprof.
-  # Additionally, the log level will be set to DEBUG.
-  #
-  # Optional
-  # Default: false
-  #
-  debug = true
+  debug = false
 
 [entryPoints]
-  [entryPoints.traefik]
-  address = ":8080"
   [entryPoints.http]
   address = ":80"
     [entryPoints.http.redirect]
@@ -40,6 +21,10 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
+  [entryPoints.traefik]
+  address = ":8080"
+    [entryPoints.traefik.auth.basic]
+    users = ["admin:$apr1$hEFwU1HT$tSED2r4stzC9Tk1TnTZ6h/"]
 
 [retry]
 
@@ -47,7 +32,7 @@ defaultEntryPoints = ["https","http"]
 endpoint = "unix:///var/run/docker.sock"
 domain = "demo.palomarin.com"
 watch = true
-exposedbydefault = false
+exposedbydefault = true
 
 [acme]
 email = "hartzell@alerce.com"

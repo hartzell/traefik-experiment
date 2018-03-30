@@ -6,8 +6,9 @@ services:
     restart: always
     ports:
       - 80:80
-      - 8080:8080
       - 443:443
+    expose:
+      - 8080
     networks:
       - web
     volumes:
@@ -15,6 +16,14 @@ services:
       - /opt/traefik/traefik.toml:/traefik.toml
       - /opt/traefik/acme.json:/acme.json
     container_name: traefik
+    labels:
+      - "traefik.backend=traefik"
+      - "traefik.docker.network=web"
+      - "traefik.port=8080"
+      - "traefik.frontend.rule=Host:demo.palomarin.com;PathPrefixStrip:/api"
+      # - "traefik.frontend.rule=PathPrefixStrip:/whee"
+      # - "traefik.frontend.rule=Path:/whee"
+      - "traefik.enable=true"
 
   whoami:
     image: emilevauge/whoami #A container that exposes an API to show it's IP address
