@@ -1,3 +1,8 @@
+My implementation of a reverse proxy and a set of containers.  Based
+on various internet resources, such as the [Digital Ocean Ubuntu
+example][do-example] and the [configuration
+fragments][traefik-examples] in the Traefik docs.
+
 
 1. Update docker-compose following [their directions][install-compose] (update
    the version number as appropriate).
@@ -9,8 +14,9 @@
    ```
 2. Create an acme.json file that's owned by root and chmod'ed 600.
 
-3. Update the hostname references in `docker-compose.yml` and
-   `traefik.toml`.
+3. Update the hostname references and other variable bits (e.g. the
+   paths to the files that are mounted into the Docker containers) in
+   `docker-compose.yml` and `traefik.toml`.
 
    If none of your frontend rules mention use a `Host` rule
    then uncomment and touch up the `acme.domains` bit at the bottom
@@ -32,13 +38,19 @@
 
    and then set in the `traefik.toml` file.
 
+7. [ ] pps.  You should probably change it if/when you use this for
+   real...
+
 At this point:
 
-| URL                    | result                                                                                                                                   |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| http://hostname/ping   | routed to Traefik's ping backend, respondes OK (or not).                                                                                 |
-| http://hostname/api    | routes to Traefik's https port, which requires auth, then to the API/dashboard backend.                                                  |
-| http://hostname/whoami | routes to Traefik's https port, which requires auth, then to a container running the "whoami" image, responds with some non-random data. |
-
+| URL                     | result                                                                                                                                      |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| http://hostname/ping    | routed to Traefik's ping backend, respondes OK (or not).                                                                                    |
+| http://hostname/api     | redirects to Traefik's https port, which requires auth, then to the API/dashboard backend.                                                  |
+| https://hostname/api    | hits Traefik's https port, which requires auth, then to the API/dashboard backend.                                                          |
+| http://hostname/whoami  | redirects to Traefik's https port, which requires auth, then to a container running the "whoami" image, responds with some non-random data. |
+| https://hostname/whoami | hits Traefik's https port, which requires auth, then to a container running the "whoami" image, responds with some non-random data.         |
 
 [install-compose]: https://docs.docker.com/compose/install/#install-compose
+[do-example]: https://www.digitalocean.com/community/tutorials/how-to-use-traefik-as-a-reverse-proxy-for-docker-containers-on-ubuntu-16-04
+[traefik-examples]: https://docs.traefik.io/user-guide/examples/
