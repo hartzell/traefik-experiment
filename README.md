@@ -12,6 +12,7 @@ fragments][traefik-examples] in the Traefik docs.
    sudo chmod +x /usr/local/bin/docker-compose
    sudo curl -L https://raw.githubusercontent.com/docker/compose/1.20.1/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
    ```
+   
 2. Create an acme.json file that's owned by root and chmod'ed 600.
 
 3. Update the hostname references and other variable bits (e.g. the
@@ -21,16 +22,23 @@ fragments][traefik-examples] in the Traefik docs.
    If none of your frontend rules mention use a `Host` rule
    then uncomment and touch up the `acme.domains` bit at the bottom
    so that a certificate is generated.
+   
+4. Create (if it doesn't already exist) the Docker network you'll be
+   using, e.g.:
+   
+   ```
+   docker network create web
+   ```
 
-4. Run docker-compose, e.g.
+5. Run docker-compose, e.g.
 
    ```
    docker-compose up -d
    ```
 
-5. Cocktail.
+6. Cocktail.
 
-6. ps.  The password for the admin user was generated like so:
+7. ps.  The password for the admin user was generated like so:
 
    ```
    htpasswd -nb admin secure_password
@@ -38,7 +46,7 @@ fragments][traefik-examples] in the Traefik docs.
 
    and then set in the `traefik.toml` file.
 
-7. [ ] pps.  You should probably change it if/when you use this for
+8. [ ] pps.  You should probably change it if/when you use this for
    real...
 
 At this point:
